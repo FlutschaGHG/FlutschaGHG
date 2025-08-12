@@ -32,7 +32,10 @@
       <button type="submit" class="btn">Login</button>
     </form>
 
-    <p>Kein Konto? <a id="showRegister">Registrieren</a></p>
+    <p>
+      Kein Konto? <a id="showRegister">Registrieren</a>
+    </p>
+    <button id="continueWithoutAccount" class="btn" style="width:100%;margin-top:8px;">Ohne Konto fortfahren</button>
 
     <div id="registerSection" class="hidden">
       <h2>Registrierung</h2>
@@ -106,6 +109,11 @@
       } else {
         alert("Falscher Benutzername oder Passwort!");
       }
+    });
+
+    // Ohne Konto fortfahren
+    document.getElementById("continueWithoutAccount").addEventListener("click", () => {
+      window.location.href = "index.html";
     });
   </script>
 </body>
