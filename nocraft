@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MOD STATUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="nofalldamage.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="fonts.css">
+  <style>
+    /* ...dein CSS hier... */
+  </style>
+</head>
+<body>
+  <div id="loginError" style="display:none;position:fixed;top:32px;right:32px;z-index:9999;min-width:220px;max-width:320px;padding:18px 28px;background:rgba(33,46,82,0.18);border-radius:18px;box-shadow:0 4px 24px rgba(31,38,135,0.18);color:#fff;font-size:1.08rem;font-family:inherit;backdrop-filter:blur(12px);border:1.5px solid rgba(139,179,255,0.18);">
+    <b>Fehler:</b> Du musst dich zuerst einloggen!
+  </div>
+  <div class="shell">
+    <header>
+      <div class="logo">
+        <div class="mark"></div>
+        <div>
+          <h1>MOD STATUS</h1>
+          <p class="lead"></p>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html" class="btn">Startseite</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h2>No Craftingtable</h2>
+        <p class="summary">Die No Crafting Table Challenge bringt eine völlig neue Herausforderung in dein Minecraft-Spiel. Sobald du einen Crafting Table benutzt, ist die Challenge vorbei – du bist sofort raus! Diese Mod zwingt dich dazu, kreativ zu sein und nur mit dem Inventar-Crafting oder gefundenen Items zu überleben. Perfekt für Spieler, die Minecraft mal ganz anders erleben wollen. Mit dem Befehl :restart kannst du die Challenge jederzeit von vorn beginnen.</p>
+
+        <div class="cards" aria-label="Highlights">
+          <a id="downloadBtn" href="https://cdn.discordapp.com/attachments/1170735149126791259/1404946578342547628/NoCraftChallenge.jar?ex=689d09f6&is=689bb876&hm=e9d8e0eae5fdaf0cae2a4b33f7be50badf252a3dc59bd04dd08a377de02acddd&" class="btn ghost">1.21.4 Download</a>
+          </article>
+        </div>
+      </section>
+
+      <aside>
+        <div class="profile">
+          <div class="avatar"></div>
+          <div class="meta">
+            <strong></strong>
+            <div><small></small></div>
+          </div>
+        </div>
+
+        <div>
+          <strong></strong>
+          <div class="progress" aria-hidden="true"><i></i></div>
+          <p style="margin-top:10px;font-size:13px;color:rgba(16,42,67,0.7)"></p>
+        </div>
+
+        <footer>
+          © <span id="year"></span> Managed by <a href="https://github.com/dynamq/dynamq">DynamoGHG</a>, coded by <a href="https://github.com/FlutschaGHG/FlutschaGHG">FlutschaGHG</a>
+        </footer>
+      </aside>
+    </main>
+  </div>
+  <script>
+    // kleines Script für Jahr
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Download nur für angemeldete Nutzer
+    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadUrl = "https://cdn.discordapp.com/attachments/1170735149126791259/1404946578342547628/NoCraftChallenge.jar?ex=689d09f6&is=689bb876&hm=e9d8e0eae5fdaf0cae2a4b33f7be50badf252a3dc59bd04dd08a377de02acddd&";
+    const loginError = document.getElementById('loginError');
+
+    if (localStorage.getItem("loggedInUser")) {
+      downloadBtn.setAttribute("href", downloadUrl);
+      downloadBtn.classList.remove("ghost");
+      downloadBtn.classList.add("btn");
+    } else {
+      downloadBtn.setAttribute("href", "#");
+      downloadBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        // Glassiger Fehler oben rechts anzeigen
+        loginError.style.display = "block";
+        loginError.style.animation = "none"; // Reset animation
+        void loginError.offsetWidth; // Trigger reflow for restart
+        setTimeout(() => {
+          loginError.style.animation = "bubble-fade 0.6s cubic-bezier(.4,2,.6,.9) forwards";
+          setTimeout(() => {
+            loginError.style.display = "none";
+            loginError.style.animation = "none";
+          }, 600);
+        }, 1900);
+      });
+    }
+  </script>
+</body>
+</html>
