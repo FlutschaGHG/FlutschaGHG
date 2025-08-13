@@ -152,6 +152,34 @@
     } else {
       logoutLink.style.display = "none";
     }
+
+    document.querySelector('.shell').addEventListener('click', function(e) {
+  // Keine Blase auf Buttons, Inputs, Links, Labels
+  if (
+    e.target.tagName === 'BUTTON' ||
+    e.target.tagName === 'A' ||
+    e.target.tagName === 'INPUT' ||
+    e.target.tagName === 'LABEL' ||
+    e.target.closest('button') ||
+    e.target.closest('a') ||
+    e.target.closest('input')
+  ) {
+    return;
+  }
+
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  const bubble = document.createElement('span');
+  bubble.className = 'bubble-effect';
+  bubble.style.left = x + 'px';
+  bubble.style.top = y + 'px';
+
+  this.appendChild(bubble);
+
+  bubble.addEventListener('animationend', () => bubble.remove());
+});
   </script>
 </body>
 </html>
