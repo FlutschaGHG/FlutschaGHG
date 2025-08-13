@@ -21,6 +21,7 @@ body {
   width: 95vw;
   margin: 40px auto;
   color: #fff;
+  position: relative; /* Bezugspunkt für .bubble-effect */
 }
 
 /* Buttons */
@@ -160,4 +161,47 @@ form input[type="text"],
 form input[type="password"] {
   margin-bottom: 18px;
   margin-top: 0;
+}
+
+/* Blaseneffekt */
+.bubble-effect {
+  position: absolute;
+  width: 28px;   /* vorher 44px */
+  height: 28px;  /* vorher 44px */
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 40%, #8bb3ffcc 60%, #06fff6aa 100%, transparent 100%);
+  opacity: 0.7;
+  transform: translate(-50%, -50%) scale(1);
+  animation: bubble-pop 0.7s cubic-bezier(.4,2,.6,.9) forwards;
+  z-index: 10;
+}
+
+@keyframes bubble-pop {
+  0% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.7);
+  }
+}
+@keyframes bubble-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
 }
