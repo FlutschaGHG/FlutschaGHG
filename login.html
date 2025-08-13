@@ -15,53 +15,71 @@
       color:#06fff6;
       text-decoration: underline;
     }
+
+    /* Blaseneffekt-Stile */
+    .bubble-effect {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      animation: bubble 0.6s ease-out forwards;
+    }
+
+    @keyframes bubble {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Hintergrund und Glass-Morphism-Container -->
+  <div id="loginError" style="display:none;position:fixed;top:32px;right:32px;z-index:9999;min-width:220px;max-width:320px;padding:18px 28px;background:rgba(33,46,82,0.18);border-radius:18px;box-shadow:0 4px 24px rgba(31,38,135,0.18);color:#fff;font-size:1.08rem;font-family:inherit;backdrop-filter:blur(12px);border:1.5px solid rgba(139,179,255,0.18);">
+    <b>Fehler:</b> Benutzer oder Passwort existiert nicht!
+  </div>
   <div class="shell" style="max-width: 370px; width: 98vw; padding: 38px 22px;">
     <h1>Login</h1>
-
     <form id="loginForm">
       <label for="loginUsername">Benutzername</label>
       <input type="text" id="loginUsername" required />
-
       <label for="loginPassword">Passwort</label>
       <input type="password" id="loginPassword" required />
-
       <button type="submit" class="btn">Login</button>
     </form>
-
     <p>
       Kein Konto? <a id="showRegister">Registrieren</a>
     </p>
     <button id="continueWithoutAccount" class="btn" style="width:100%;margin-top:8px;">Ohne Konto fortfahren</button>
-
     <div id="registerSection" class="hidden">
       <h2>Registrierung</h2>
       <form id="registerForm">
         <label for="registerUsername">Benutzername</label>
         <input type="text" id="registerUsername" required />
-
         <label for="registerPassword">Passwort</label>
         <input type="password" id="registerPassword" required />
-
         <button type="submit" class="btn">Registrieren</button>
       </form>
       <p><a id="showLogin">Zurück zum Login</a></p>
     </div>
+    <div style="text-align:right; margin-bottom:8px;">
+      <a id="logoutLink" style="font-size:0.92rem; color:#8bb3ff; cursor:pointer; text-decoration:underline; background:none; border:none;">Abmelden</a>
+    </div>
   </div>
-
   <script>
     // Umschalten zwischen Login und Registrierung
     const loginForm = document.getElementById("loginForm");
     const registerSection = document.getElementById("registerSection");
     const showRegisterLink = document.getElementById("showRegister");
     const showLoginLink = document.getElementById("showLogin");
+    const loginError = document.getElementById("loginError");
 
     showRegisterLink.addEventListener("click", () => {
       loginForm.classList.add("hidden");
-      showRegisterLink.parentElement.classList.add("hidden"); // versteckt "Kein Konto? Registrieren"
+      showRegisterLink.parentElement.classList.add("hidden");
       registerSection.classList.remove("hidden");
     });
 
@@ -78,21 +96,18 @@
       const pass = document.getElementById("registerPassword").value;
 
       if (!user || !pass) {
-        alert("Bitte alle Felder ausfüllen.");
+        // Optional: Fehleranzeige für leere Felder
         return;
       }
 
       let users = JSON.parse(localStorage.getItem("users") || "{}");
       if (users[user]) {
-        alert("Benutzername existiert schon!");
+        // Optional: Fehleranzeige für existierenden User
         return;
       }
       users[user] = pass;
       localStorage.setItem("users", JSON.stringify(users));
-      alert("Registrierung erfolgreich! Bitte jetzt einloggen.");
       e.target.reset();
-
-      // Nach Registrierung direkt zum Login wechseln
       showLoginLink.click();
     });
 
@@ -107,7 +122,17 @@
         localStorage.setItem("loggedInUser", user);
         window.location.href = "index.html";
       } else {
-        alert("Falscher Benutzername oder Passwort!");
+        // Glassiger Fehler oben rechts anzeigen
+        loginError.style.display = "block";
+        loginError.style.animation = "none";
+        void loginError.offsetWidth;
+        setTimeout(() => {
+          loginError.style.animation = "bubble-fade 0.6s cubic-bezier(.4,2,.6,.9) forwards";
+          setTimeout(() => {
+            loginError.style.display = "none";
+            loginError.style.animation = "none";
+          }, 600);
+        }, 1900);
       }
     });
 
@@ -115,6 +140,18 @@
     document.getElementById("continueWithoutAccount").addEventListener("click", () => {
       window.location.href = "index.html";
     });
+
+    // Abmelden-Link
+    const logoutLink = document.getElementById('logoutLink');
+    if (localStorage.getItem("loggedInUser")) {
+      logoutLink.style.display = "inline";
+      logoutLink.addEventListener("click", function() {
+        localStorage.removeItem("loggedInUser");
+        window.location.href = "login.html";
+      });
+    } else {
+      logoutLink.style.display = "none";
+    }
   </script>
 </body>
 </html>
